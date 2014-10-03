@@ -1,0 +1,25 @@
+﻿<MediaImport>
+  <ContentFolderUri>Catalogs</ContentFolderUri>
+  <MediaType name="ImageFile">
+    <ContentType>EPiServer.Commerce.Sample.Models.Files.ImageFile, EPiServer.Commerce.Sample</ContentType>
+    <ContentProperty>
+      <Name>Description</Name>
+      <Type>String</Type>
+    </ContentProperty>
+  </MediaType>
+  <MediaGroup mediaTypeName="ImageFile">
+    <Media>
+      <IntegrationId>TEST_IMAGE</IntegrationId>
+      <Name>Test Media with Binary Content in Archive</Name>
+      <BlobContent>
+        <FileInArchive>Entry.jpg</FileInArchive>
+      </BlobContent>
+ 	<Properties>
+        <Value>
+          <Name>Description</Name>
+          <String>TestValue</String>
+        </Value>
+      </Properties>
+    </Media>
+  </MediaGroup>
+</MediaImport>

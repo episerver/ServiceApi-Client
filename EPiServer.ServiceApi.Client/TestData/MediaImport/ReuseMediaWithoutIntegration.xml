@@ -1,0 +1,38 @@
+﻿<MediaImport>
+  <MediaType name="media">
+    <ContentType>EPiServer.ServiceApi.Specs.TestData.TestMedia, EPiServer.ServiceApi.Specs</ContentType>
+  </MediaType>
+  <MediaGroup mediaTypeName="media">
+    <Media>
+      <IntegrationId>TEST_MEDIA</IntegrationId>
+      <Name>TEST_MEDIA</Name>
+      <BlobContent>
+        <FileInArchive>Entry.jpg</FileInArchive>
+      </BlobContent>
+    </Media>
+    <Media>
+      <IntegrationId>TEST_MEDIA</IntegrationId>
+      <Name>TEST_MEDIA</Name>
+      <BlobContent>
+        <Unchanged/>
+      </BlobContent>
+      <CatalogEntries>
+        <Association>
+          <Code>MEDIAIMPORTJOB_TEST_ENTRY</Code>
+        </Association>
+      </CatalogEntries>
+    </Media>
+    <Media>
+      <IntegrationId>TEST_MEDIA</IntegrationId>
+      <Name>TEST_MEDIA</Name>
+      <BlobContent>
+        <Unchanged/>
+      </BlobContent>
+      <CatalogNodes>
+        <Association>
+          <Code>MEDIAIMPORTJOB_TEST_NODE</Code>
+        </Association>
+      </CatalogNodes>
+    </Media>
+  </MediaGroup>
+</MediaImport>
