@@ -127,9 +127,9 @@ namespace EPiServer.Integration.Client.Tests.Cruds
         {
             try
             {
-                var result = Delete("episerverapi/commerce/entries/Jackets-Peacoats-Asymmetrical/relations/Jackets-Peacoats-Hooded-Tan-Large/ProductVariation").Result.Content.ReadAsStringAsync().Result;
+                var result = Delete("episerverapi/commerce/entries/Jackets-Peacoats-Asymmetrical/entryrelations/Jackets-Peacoats-Hooded-Tan-Large/ProductVariation").Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_relationOutputPath, "DeleteJson.txt"), result);
-                result = DeleteXml("episerverapi/commerce/entries/Jackets-Blazers-Wrap/relations/Jackets-Peacoats-Hooded-Tan-Largedd/ProductVariation").Result.Content.ReadAsStringAsync().Result;
+                result = DeleteXml("episerverapi/commerce/entries/Jackets-Blazers-Wrap/entryrelations/Jackets-Peacoats-Hooded-Tan-Largedd/ProductVariation").Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_relationOutputPath, "DeleteXml.xml"), result);
                 return "Delete entry relation complete.....";
             }

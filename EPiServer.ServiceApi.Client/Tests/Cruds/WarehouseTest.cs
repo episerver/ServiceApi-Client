@@ -100,6 +100,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
                     State = "State"
                 };
                 var json = JsonConvert.SerializeObject(model);
+                model.Code = "Warehouse 4";
                 var xml = SerializeObjectToXml(typeof(Warehouse), model);
                 var result = Post("/episerverapi/commerce/warehouses", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_warehouseOutputPath, "PostJson.txt"), result);

@@ -232,7 +232,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
                 };
                 var json = JsonConvert.SerializeObject(model);
                 var xml = SerializeObjectToXml(typeof(ItemAsset), model);
-                var result = Put("episerverapi/commerce/nodesFashion/assets/ed6fc3d7-091f-4e84-b1f6-49b56e7b5146/episerver.core.icontentimage", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+                var result = Put("episerverapi/commerce/nodes/Fashion/assets/ed6fc3d7-091f-4e84-b1f6-49b56e7b5146/episerver.core.icontentimage", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_assetOutputPath, "PutNodeJson.txt"), result);
                 result = Put("episerverapi/commerce/nodes/Fashion/assets/ed6fc3d7-091f-4e84-b1f6-49b56e7b5146/episerver.core.icontentimage", new StringContent(xml, Encoding.UTF8, "text/xml")).Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_assetOutputPath, "PutNodeXml.xml"), result);

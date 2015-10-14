@@ -38,9 +38,9 @@ namespace EPiServer.Integration.Client.Tests.Cruds
         {
             try
             {
-                var result = Get("/episerverapi/commerce/entries").Result.Content.ReadAsStringAsync().Result;
+                var result = Get("/episerverapi/commerce/entries/1/20").Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_entryOutputPath, "GetAllJson.txt"), result);
-                result = GetXml("/episerverapi/commerce/entries").Result.Content.ReadAsStringAsync().Result;
+                result = GetXml("/episerverapi/commerce/entries/1/20").Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_entryOutputPath, "GetAllXml.xml"), result);
                 return "Get all entries complete.....";
             }
