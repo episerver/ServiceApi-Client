@@ -129,7 +129,7 @@ namespace EPiServer.Integration.Client.Client
                 fields.Add(OAuth2Constants.Scope, scope);
             }
 
-            return Request(Merge(fields, additionalValues));
+            return RequestAccessToken(Merge(fields, additionalValues));
         }
 
         public Task<TokenResponse> RequestAuthorizationCodeAsync(string code, string redirectUri, Dictionary<string, string> additionalValues = null)
@@ -189,6 +189,21 @@ namespace EPiServer.Integration.Client.Client
         public async Task<TokenResponse> Request(Dictionary<string, string> form)
         {
             var response = await _client.PostAsync(string.Empty, new FormUrlEncodedContent(form)).ConfigureAwait(false);
+
+            if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return new TokenResponse(content);
+            }
+            else
+            {
+                return new TokenResponse(response.StatusCode, response.ReasonPhrase);
+            }
+        }
+
+        private async Task<TokenResponse> RequestAccessToken(Dictionary<string, string> form, string requestUri = "")
+        {
+            var response = await _client.PostAsync("/episerverapi/token", new FormUrlEncodedContent(form)).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
             {
