@@ -9,7 +9,7 @@ namespace EPiServer.Integration.Client.Models.Catalog
     {
         public decimal MinQuantity { get; set; }
         public decimal MaxQuantity { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public String TaxCategory { get; set; }
     }
 }
