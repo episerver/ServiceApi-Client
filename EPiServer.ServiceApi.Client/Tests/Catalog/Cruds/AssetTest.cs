@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using EPiServer.Integration.Client.Models.Catalog;
 using Newtonsoft.Json;
 
-namespace EPiServer.Integration.Client.Tests.Cruds
+namespace EPiServer.Integration.Client.Tests.Catalog.Cruds
 {
     public class AssetTest : BaseTest
     {

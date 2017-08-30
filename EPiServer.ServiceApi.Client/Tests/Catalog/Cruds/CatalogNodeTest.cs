@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using EPiServer.Integration.Client.Models.Catalog;
-using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using EPiServer.Integration.Client.Models.Catalog;
+using Newtonsoft.Json;
 
-namespace EPiServer.Integration.Client.Tests.Cruds
+namespace EPiServer.Integration.Client.Tests.Catalog.Cruds
 {
     public class CatalogNodeTest : BaseTest
     {

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using EPiServer.Integration.Client.Models.Catalog;
-using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using EPiServer.Integration.Client.Models.Catalog;
+using Newtonsoft.Json;
 
-namespace EPiServer.Integration.Client.Tests.Cruds
+namespace EPiServer.Integration.Client.Tests.Catalog.Cruds
 {
     public class CatalogTest : BaseTest
     {
@@ -72,7 +72,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
         {
             try
             {
-                var model = new Catalog()
+                var model = new Models.Catalog.Catalog()
                 {
                     DefaultCurrency = "usd",
                     DefaultLanguage = "en",
@@ -93,7 +93,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
                     WeightBase = "lbs"
                 };
                 var json = JsonConvert.SerializeObject(model);
-                var xml = SerializeObjectToXml(typeof(Catalog), model);
+                var xml = SerializeObjectToXml(typeof(Models.Catalog.Catalog), model);
                 var result = Post("/episerverapi/commerce/catalogs", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_catalogOutputPath, "PostJson.txt"), result);
                 result = Post("/episerverapi/commerce/catalogs", new StringContent(xml, Encoding.UTF8, "text/xml")).Result.Content.ReadAsStringAsync().Result;
@@ -111,7 +111,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
         {
             try
             {
-                var model = new Catalog()
+                var model = new Models.Catalog.Catalog()
                 {
                     DefaultCurrency = "usd",
                     DefaultLanguage = "en",
@@ -132,7 +132,7 @@ namespace EPiServer.Integration.Client.Tests.Cruds
                     WeightBase = "lbs"
                 };
                 var json = JsonConvert.SerializeObject(model);
-                var xml = SerializeObjectToXml(typeof(Catalog), model);
+                var xml = SerializeObjectToXml(typeof(Models.Catalog.Catalog), model);
                 var result = Put("episerverapi/commerce/catalogs/Test Post", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
                 WriteTextFile(Path.Combine(_catalogOutputPath, "PutJson.txt"), result);
                 result = Put("episerverapi/commerce/catalogs/Test Post", new StringContent(xml, Encoding.UTF8, "text/xml")).Result.Content.ReadAsStringAsync().Result;
