@@ -16,17 +16,17 @@ namespace EPiServer.Integration.Client.Models.Order
         /// <summary>
         /// Array of addresses.
         /// </summary>
-        public IEnumerable<Address> Addresses { get; set; }
+        public List<Address> Addresses { get; set; }
 
         /// <summary>
         /// Array of child organizations.
         /// </summary>
-        public IEnumerable<Organization> ChildOrganizations { get; set; }
+        public List<Organization> ChildOrganizations { get; set; }
         
         /// <summary>
         /// Array of contacts.
         /// </summary>
-        public IEnumerable<Contact> Contacts { get; set; }
+        public List<Contact> Contacts { get; set; }
         
         /// <summary>
         /// Organization type.

@@ -44,7 +44,7 @@ namespace EPiServer.Integration.Client.Tests.Order
             var result = Get($"/episerverapi/commerce/customer/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "GetJson.txt"), result);
             result = GetXml($"/episerverapi/commerce/customer/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
-            WriteTextFile(Path.Combine(_customerOutputPath, "GetXml.txt"), result);
+            WriteTextFile(Path.Combine(_customerOutputPath, "GetXml.xml"), result);
             return "Get contact completed";
         }
 
@@ -86,7 +86,7 @@ namespace EPiServer.Integration.Client.Tests.Order
             var result = Post($"/episerverapi/commerce/customer/contact/{_userId}", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "PostJson.txt"), result);
             result = Post($"/episerverapi/commerce/customer/contact/{_userId}", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
-            WriteTextFile(Path.Combine(_customerOutputPath, "PostXml.txt"), result);
+            WriteTextFile(Path.Combine(_customerOutputPath, "PostXml.xml"), result);
             return "Post contact completed";
         }
 
@@ -95,7 +95,7 @@ namespace EPiServer.Integration.Client.Tests.Order
             var model = new Organization
             {
                 PrimaryKeyId = _organizationId,
-                Addresses = new Address[]
+                Addresses = new List<Address>()
                 {
                     new Address
                     {
@@ -120,11 +120,11 @@ namespace EPiServer.Integration.Client.Tests.Order
             };
 
             var json = JsonConvert.SerializeObject(model);
-            var xml = SerializeObjectToXml(typeof(Contact), model);
+            var xml = SerializeObjectToXml(typeof(Organization), model);
             var result = Post($"/episerverapi/commerce/customer/organization", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationJson.txt"), result);
             result = Post($"/episerverapi/commerce/customer/organization", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
-            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.txt"), result);
+            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.xml"), result);
             return "Post organization completed";
         }
 
@@ -133,7 +133,7 @@ namespace EPiServer.Integration.Client.Tests.Order
             var result = Delete($"/episerverapi/commerce/customer/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationJson.txt"), result);
             result = DeleteXml($"/episerverapi/commerce/customer/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
-            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.txt"), result);
+            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.xml"), result);
             return "Delete organization completed";
         }
     }
