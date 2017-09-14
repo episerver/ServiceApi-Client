@@ -32,6 +32,8 @@ namespace EPiServer.Integration.Client.Tests.Order
             message.AppendLine(GetContact());
             message.AppendLine("Running post organization.....");
             message.AppendLine(PostOrganization());
+            message.AppendLine("Running put organization.....");
+            message.AppendLine(PutOrganization());
             message.AppendLine("Running delete organization.....");
             message.AppendLine(DeleteOrganization());
             return message.ToString();
@@ -41,9 +43,9 @@ namespace EPiServer.Integration.Client.Tests.Order
         {
             var contactId = Guid.Parse("2A40754D-86D5-460B-A5A4-32BC87703567"); // admin contact
 
-            var result = Get($"/episerverapi/commerce/customer/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
+            var result = Get($"/episerverapi/commerce/customers/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "GetJson.txt"), result);
-            result = GetXml($"/episerverapi/commerce/customer/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
+            result = GetXml($"/episerverapi/commerce/customers/contact/{contactId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "GetXml.xml"), result);
             return "Get contact completed";
         }
@@ -83,9 +85,9 @@ namespace EPiServer.Integration.Client.Tests.Order
 
             var json = JsonConvert.SerializeObject(model);
             var xml = SerializeObjectToXml(typeof(Contact), model);
-            var result = Post($"/episerverapi/commerce/customer/contact/{_userId}", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+            var result = Post($"/episerverapi/commerce/customers/contact/{_userId}", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "PostJson.txt"), result);
-            result = Post($"/episerverapi/commerce/customer/contact/{_userId}", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
+            result = Post($"/episerverapi/commerce/customers/contact/{_userId}", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "PostXml.xml"), result);
             return "Post contact completed";
         }
@@ -121,18 +123,57 @@ namespace EPiServer.Integration.Client.Tests.Order
 
             var json = JsonConvert.SerializeObject(model);
             var xml = SerializeObjectToXml(typeof(Organization), model);
-            var result = Post($"/episerverapi/commerce/customer/organization", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+            var result = Post($"/episerverapi/commerce/customers/organization", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationJson.txt"), result);
-            result = Post($"/episerverapi/commerce/customer/organization", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
+            result = Post($"/episerverapi/commerce/customers/organization", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
+            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.xml"), result);
+            return "Post organization completed";
+        }
+
+        public string PutOrganization()
+        {
+            var model = new Organization
+            {
+                PrimaryKeyId = _organizationId,
+                OrganizationType = "Corporation",
+                Addresses = new List<Address>()
+                {
+                    new Address
+                    {
+                        ShippingDefault = true,
+                        PostalCode = "10012",
+                        City = "New York",
+                        CountryCode = "US",
+                        CountryName = "United States",
+                        RegionName = "New York",
+                        RegionCode = "NY",
+                        Email = "frederik@geta.no",
+                        FirstName = "Frederik",
+                        LastName = "Vig",
+                        Line1 = "379 West Broadway",
+                        Line2 = "Suite 248",
+                        DaytimePhoneNumber = "(347) 261-7408",
+                        EveningPhoneNumber = "(347) 261-7408",
+                        Name = "Shipping address",
+                        Modified = DateTime.UtcNow
+                    }
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(model);
+            var xml = SerializeObjectToXml(typeof(Organization), model);
+            var result = Put($"/episerverapi/commerce/customers/organization/{_organizationId}", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+            WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationJson.txt"), result);
+            result = Put($"/episerverapi/commerce/customers/organization/{_organizationId}", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.xml"), result);
             return "Post organization completed";
         }
 
         public string DeleteOrganization()
         {
-            var result = Delete($"/episerverapi/commerce/customer/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
+            var result = Delete($"/episerverapi/commerce/customers/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationJson.txt"), result);
-            result = DeleteXml($"/episerverapi/commerce/customer/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
+            result = DeleteXml($"/episerverapi/commerce/customers/organization/{_organizationId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_customerOutputPath, "DeleteOrganizationXml.xml"), result);
             return "Delete organization completed";
         }

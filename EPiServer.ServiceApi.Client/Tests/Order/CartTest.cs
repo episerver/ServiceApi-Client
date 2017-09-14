@@ -16,6 +16,8 @@ namespace EPiServer.Integration.Client.Tests.Order
 
         private readonly Guid _userId = Guid.NewGuid();
 
+        private int _cartId;
+
         public CartTest()
         {
             _cartOutputPath = Directory.CreateDirectory(Path.Combine(OutputDirectory, String.Format("Cart\\{0}", DateTime.Now.ToString("yyyy_MM_dd_HHmmss")))).FullName;
@@ -34,18 +36,19 @@ namespace EPiServer.Integration.Client.Tests.Order
             message.AppendLine("Running get carts.....");
             message.AppendLine(GetCarts());
             message.AppendLine("Running delete cart.....");
-            message.AppendLine(DeleteOrder());
+            message.AppendLine(DeleteCart());
             return message.ToString();
         }
 
         private string PutCart()
         {
-            var model = new OrderGroup
+            var model = new Cart
             {
                 CustomerId = _userId,
                 Name = "Default",
+                MarketId = "Default",
                 OrderForms = new[]
-    {
+                {
                     new OrderForm
                     {
                         Name = "Default",
@@ -65,7 +68,8 @@ namespace EPiServer.Integration.Client.Tests.Order
                                         Code = "XYZ",
                                         DisplayName = "XYZ Shirt",
                                         Quantity = 1,
-                                        PlacedPrice = 150
+                                        PlacedPrice = 150,
+                                        InventoryTrackingStatus = "Enabled"
                                     }
                                 },
                                 Properties = new List<PropertyItem> // Requires properties created in commerce DB through API or CM
@@ -100,46 +104,47 @@ namespace EPiServer.Integration.Client.Tests.Order
                 }
             };
             var json = JsonConvert.SerializeObject(model);
-            var xml = SerializeObjectToXml(typeof(OrderGroup), model);
-            var result = Put($"/episerverapi/commerce/cart/1", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+            var xml = SerializeObjectToXml(typeof(Cart), model);
+            var result = Put($"/episerverapi/commerce/carts/{_cartId}", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "PutJson.txt"), result);
-            result = Put($"/episerverapi/commerce/cart/1", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
+            result = Put($"/episerverapi/commerce/carts/{_cartId}", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "PutXml.xml"), result);
             return "Put cart completed.";
         }
 
-        private string DeleteOrder()
+        private string DeleteCart()
         {
-            var result = Delete($"/episerverapi/commerce/cart/1").Result.Content.ReadAsStringAsync().Result;
+            var result = Delete($"/episerverapi/commerce/carts/{_cartId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "DeleteJson.txt"), result);
-            result = DeleteXml($"/episerverapi/commerce/cart/1").Result.Content.ReadAsStringAsync().Result;
+            result = DeleteXml($"/episerverapi/commerce/carts/1").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "DeleteXml.xml"), result);
             return "Delete cart completed.";
         }
 
         private string GetCart()
         {
-            var result = Get($"/episerverapi/commerce/cart/1").Result.Content.ReadAsStringAsync().Result;
+            var result = Get($"/episerverapi/commerce/carts/{_cartId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "GetJson.txt"), result);
-            result = GetXml($"/episerverapi/commerce/cart/1").Result.Content.ReadAsStringAsync().Result;
+            result = GetXml($"/episerverapi/commerce/carts/{_cartId}").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "GetXml.xml"), result);
             return "Get cart completed.";
         }
 
         private string GetCarts()
         {
-            var result = Get($"/episerverapi/commerce/cart/search/1/10").Result.Content.ReadAsStringAsync().Result;
+            var result = Get($"/episerverapi/commerce/carts/search/1/10").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "SearchJson.txt"), result);
-            result = GetXml($"/episerverapi/commerce/cart/search/1/10").Result.Content.ReadAsStringAsync().Result;
+            result = GetXml($"/episerverapi/commerce/carts/search/1/10").Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "SearchXml.xml"), result);
             return "Get orders completed.";
         }
 
         private string PostCart()
         {
-            var model = new OrderGroup
+            var model = new Cart
             {
                 CustomerId = _userId,
+                MarketId = "Default",
                 Name = "Default",
                 OrderForms = new[]
                 {
@@ -162,7 +167,8 @@ namespace EPiServer.Integration.Client.Tests.Order
                                         Code = "XYZ",
                                         DisplayName = "XYZ Shirt",
                                         Quantity = 1,
-                                        PlacedPrice = 150
+                                        PlacedPrice = 150,
+                                        InventoryTrackingStatus = "Enabled"
                                     }
                                 },
                                 Properties = new List<PropertyItem> // Requires properties created in commerce DB through API or CM
@@ -193,11 +199,18 @@ namespace EPiServer.Integration.Client.Tests.Order
             };
 
             var json = JsonConvert.SerializeObject(model);
-            var xml = SerializeObjectToXml(typeof(OrderGroup), model);
-            var result = Post($"/episerverapi/commerce/cart", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+            var xml = SerializeObjectToXml(typeof(Cart), model);
+            var result = Post($"/episerverapi/commerce/carts", new StringContent(json, Encoding.UTF8, "application/json")).Result.Content.ReadAsStringAsync().Result;
+
+            var cart = JsonConvert.DeserializeObject<Cart>(result);
+            _cartId = cart.OrderGroupId;
+
             WriteTextFile(Path.Combine(_cartOutputPath, "PostJson.txt"), result);
-            result = Post($"/episerverapi/commerce/cart", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
+            result = Post($"/episerverapi/commerce/carts", new StringContent(xml, Encoding.UTF8, "application/xml")).Result.Content.ReadAsStringAsync().Result;
             WriteTextFile(Path.Combine(_cartOutputPath, "PostXml.xml"), result);
+
+
+
             return "Post cart completed.";
         }
     }
